@@ -1,4 +1,4 @@
-name: linux-x64
+name: Android-arm64
 
 on: 
   push:
@@ -23,12 +23,12 @@ jobs:
           export PATH="$(pwd)/depot_tools:$PATH"
           python scripts/bootstrap.py
           gclient sync
-          gn gen out/Release --args="is_debug=false target_cpu=\"x64\" angle_build_all=false"
+          gn gen out/Release --args="is_debug=false target_cpu=\"arm64\" angle_build_all=true"
           autoninja -C out/Release
       - name: Pack
         run: |
-          mkdir angle-linux-x64
-          mkdir angle-linux-x64/dist
+          mkdir angle-android-arm64
+          mkdir angle-android-arm64/dist
           rm -rf out/Release/gen
           rm -rf out/Release/obj
           rm -rf out/Release/args.gn
@@ -36,12 +36,12 @@ jobs:
           rm -rf out/Release/build.ninja.d
           rm -rf out/Release/toolchain.ninja
           find out/Release -name "*.TOC" -delete
-          mv -f out/Release/* angle-linux-x64/dist/
-          cp -rf include angle-linux-x64/
-          find angle-linux-x64 -name ".clang-format" -delete
-          find angle-linux-x64 -name "*.md" -delete
+          mv -f out/Release/* angle-android-arm64/dist/
+          cp -rf include angle-android-arm64/
+          find angle-android-arm64 -name ".clang-format" -delete
+          find angle-android-arm64 -name "*.md" -delete
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: angle-linux-x64
-          path: angle-linux-x64
+          name: angle-android-arm64
+          path: angle-android-arm64
