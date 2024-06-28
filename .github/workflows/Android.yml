@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-android-arm64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout sources
         run: |
@@ -23,7 +23,7 @@ jobs:
           export PATH="$(pwd)/depot_tools:$PATH"
           python scripts/bootstrap.py
           gclient sync
-          gn gen out/Release --args="is_debug=false target_cpu=\"arm64\" angle_build_all=true"
+          gn gen out/Release --args="is_debug=false target_cpu=\"arm64\" angle_enabled_gl=true angle_enabled_glsl=true angle_enabled_hlsl=true angle_enabled_vulkan=true angle_enabled_gl_desktop_frontend=true"
           autoninja -C out/Release
       - name: Pack
         run: |
@@ -41,7 +41,7 @@ jobs:
           find angle-android-arm64 -name ".clang-format" -delete
           find angle-android-arm64 -name "*.md" -delete
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: angle-android-arm64
           path: angle-android-arm64
